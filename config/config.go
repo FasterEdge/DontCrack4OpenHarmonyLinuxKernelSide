@@ -1,5 +1,11 @@
 package config
 
+// FasterEdge - 对称、可靠、安全的多场景边缘计算框架
+// https://github.com/FasterEdge
+// DontCrack开源鸿蒙(OpenHarmony)Linux内核专用版
+// https://github.com/FasterEdge/DontCrack4OpenHarmonyLinuxKernelSide
+// tyza66
+// https://github.com/tyza66
 type Config struct {
 	// 系统相关
 	Version string // 系统版本号(主方法中写死定义)
