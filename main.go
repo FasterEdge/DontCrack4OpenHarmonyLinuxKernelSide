@@ -6,9 +6,11 @@ import (
 	"flag"
 )
 
+// FasterEdge - 对称、可靠、安全的多场景边缘计算框架
+// https://github.com/FasterEdge
 // DontCrack开源鸿蒙(OpenHarmony)Linux内核专用版
 // https://github.com/FasterEdge/DontCrack4OpenHarmonyLinuxKernelSide
-// By tyza66
+// tyza66
 // https://github.com/tyza66
 // 程序入口
 func main() {
@@ -17,7 +19,7 @@ func main() {
 
 	// 全局配置信息获得
 	// 管理子进程相关
-	path := flag.String("path", "", "要管理的程序路径（可选，支持可执行文件和shell脚本）")
+	path := flag.String("path", "", "要管理的程序路径（必选，支持可执行文件和shell脚本）")
 	args := flag.String("args", "", "传递给程序的参数（可选）")
 	pre := flag.String("pre", "", "启动前要执行的命令（可选，在sh中执行，可用&&/;/||连接多条命令）")
 	env := flag.String("env", "", "为子进程追加环境变量，如: \"PATH=/usr/local/bin:/usr/bin FOO=bar\"；用空格或分号分隔")
