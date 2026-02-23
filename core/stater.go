@@ -13,6 +13,7 @@ import (
 	"bufio"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -36,6 +37,8 @@ const logo = `
    \ \_______\ \_______\       |\________\       \ \_______\ \__\ \__\
     \|_______|\|_______|        \|_______|        \|_______|\|__|\|__|
 `
+
+const rootMsg = "DontCrash By FasterEdge"
 
 // 管理器运行时状态
 var (
@@ -106,10 +109,15 @@ func Start(cfg config.Config) {
 	// 根路径返回简单文本
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		fmt.Fprintln(w, "DontCrash By FasterEdge")
+		fmt.Fprintln(w, rootMsg)
 	})
 	// 重置重试计数并启动进程
 	mux.HandleFunc("/startup", func(w http.ResponseWriter, r *http.Request) {
+		if err := checkPassword(r, cfg.Password); err != nil {
+			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+			fmt.Fprintln(w, rootMsg)
+			return
+		}
 		if r.Method != http.MethodGet && r.Method != http.MethodPost {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 			return
@@ -123,6 +131,11 @@ func Start(cfg config.Config) {
 	})
 	// 心跳，返回当前状态和日志
 	mux.HandleFunc("/heartbeat", func(w http.ResponseWriter, r *http.Request) {
+		if err := checkPassword(r, cfg.Password); err != nil {
+			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+			fmt.Fprintln(w, rootMsg)
+			return
+		}
 		if r.Method != http.MethodGet {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 			return
@@ -175,6 +188,11 @@ func Start(cfg config.Config) {
 	})
 	// 停止子进程
 	mux.HandleFunc("/shutdown", func(w http.ResponseWriter, r *http.Request) {
+		if err := checkPassword(r, cfg.Password); err != nil {
+			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+			fmt.Fprintln(w, rootMsg)
+			return
+		}
 		if r.Method != http.MethodGet && r.Method != http.MethodPost {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 			return
@@ -413,4 +431,16 @@ func readProcessOutput(reader io.ReadCloser, prefix string, cfg config.Config) {
 	if err := scanner.Err(); err != nil {
 		log.Printf("读取进程输出时出错: %v", err)
 	}
+}
+
+// checkPassword 校验请求中携带的 password，如果未配置密码则直接通过
+func checkPassword(r *http.Request, expected string) error {
+	if expected == "" {
+		return nil
+	}
+	pw := r.URL.Query().Get("password")
+	if pw == expected {
+		return nil
+	}
+	return errors.New("unauthorized")
 }
