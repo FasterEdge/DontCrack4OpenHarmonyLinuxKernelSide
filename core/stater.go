@@ -47,7 +47,7 @@ var (
 	shutdownSignal = make(chan struct{})
 )
 
-// Start 负责初始化并启动管理器
+// 初始化并启动管理器
 func Start(cfg config.Config) {
 	// 检查配置信息是否合法
 	err := config.CheckConfig(cfg)
@@ -89,10 +89,12 @@ func Start(cfg config.Config) {
 
 	// 创建HTTP服务器
 	mux := http.NewServeMux()
+	// 根路径返回简单文本
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		fmt.Fprintln(w, "DontCrash By tyza66")
+		fmt.Fprintln(w, "DontCrash By FasterEdge")
 	})
+	// 重置重试计数并启动进程
 	mux.HandleFunc("/startup", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet && r.Method != http.MethodPost {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -105,6 +107,7 @@ func Start(cfg config.Config) {
 		}
 		fmt.Fprintln(w, "ok")
 	})
+	// 心跳，返回当前状态和日志
 	mux.HandleFunc("/heartbeat", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -156,6 +159,7 @@ func Start(cfg config.Config) {
 		}
 		w.Write(data)
 	})
+	// 停止子进程
 	mux.HandleFunc("/shutdown", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet && r.Method != http.MethodPost {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
