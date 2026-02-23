@@ -1,7 +1,9 @@
 package core
 
 import (
+	"errors"
 	"io"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -65,4 +67,16 @@ func detectFileType(path string) (string, error) {
 		}
 		return "unknown", nil
 	}
+}
+
+// checkPassword 校验请求中携带的 password，如果未配置密码则直接通过
+func checkPassword(r *http.Request, expected string) error {
+	if expected == "" {
+		return nil
+	}
+	pw := r.URL.Query().Get("password")
+	if pw == expected {
+		return nil
+	}
+	return errors.New("unauthorized")
 }

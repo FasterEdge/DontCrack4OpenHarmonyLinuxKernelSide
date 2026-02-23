@@ -13,7 +13,6 @@ import (
 	"bufio"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -431,16 +430,4 @@ func readProcessOutput(reader io.ReadCloser, prefix string, cfg config.Config) {
 	if err := scanner.Err(); err != nil {
 		log.Printf("读取进程输出时出错: %v", err)
 	}
-}
-
-// checkPassword 校验请求中携带的 password，如果未配置密码则直接通过
-func checkPassword(r *http.Request, expected string) error {
-	if expected == "" {
-		return nil
-	}
-	pw := r.URL.Query().Get("password")
-	if pw == expected {
-		return nil
-	}
-	return errors.New("unauthorized")
 }
