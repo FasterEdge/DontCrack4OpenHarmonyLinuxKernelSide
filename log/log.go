@@ -16,13 +16,13 @@ const (
 	timeLayout      = "20060102-150405"
 )
 
-// LogCache 仍保留，供内存日志缓存使用。
+// 供内存日志缓存使用。
 type LogCache struct {
 	logsCache []string
 	logsMu    sync.Mutex
 }
 
-// FileLogger 负责本地日志落盘与过期清理。
+// 负责本地日志落盘与过期清理。
 type FileLogger struct {
 	mu       sync.Mutex
 	dir      string
@@ -35,7 +35,7 @@ type FileLogger struct {
 	seq     int
 }
 
-// NewFileLogger 创建日志目录并准备第一个文件。
+// 创建日志目录并准备第一个文件。
 func NewFileLogger(baseDir, procName string, lifeDays int) (*FileLogger, error) {
 	dir := filepath.Join(baseDir, procName)
 	if err := os.MkdirAll(dir, 0o755); err != nil {
@@ -50,7 +50,7 @@ func NewFileLogger(baseDir, procName string, lifeDays int) (*FileLogger, error) 
 	return fl, nil
 }
 
-// WriteLine 写入一行日志并根据规则自动轮转。
+// 写入一行日志并根据规则自动轮转。
 func (f *FileLogger) WriteLine(line string) {
 	f.mu.Lock()
 	defer f.mu.Unlock()
@@ -89,7 +89,7 @@ func (f *FileLogger) Close() error {
 	return nil
 }
 
-// rotateLocked 在持锁状态下生成新文件。
+// 在持锁状态下生成新文件。
 func (f *FileLogger) rotateLocked(now time.Time) error {
 	if f.curFile != nil {
 		_ = f.curFile.Close()
@@ -110,7 +110,7 @@ func (f *FileLogger) rotateLocked(now time.Time) error {
 	return nil
 }
 
-// cleanupLocked 删除超过 lifeDays 的日志文件（按文件名中的日期判断）。
+// 删除超过 lifeDays 的日志文件（按文件名中的日期判断）。
 func (f *FileLogger) cleanupLocked(now time.Time) {
 	if f.lifeDays <= 0 {
 		return
@@ -138,7 +138,7 @@ func (f *FileLogger) cleanupLocked(now time.Time) {
 	}
 }
 
-// parseTimestampFromName 提取文件名中的时间戳。
+// 提取文件名中的时间戳。
 // 期望格式: procName-YYYYMMDD-HHMMSS-XX.log （XX为序号，可能多位）。
 func parseTimestampFromName(name, procName string) (time.Time, bool) {
 	base := strings.TrimSuffix(name, filepath.Ext(name))
@@ -175,7 +175,7 @@ func parseTimestampFromName(name, procName string) (time.Time, bool) {
 	return t, true
 }
 
-// WalkFiles 便于测试或外部查询当前日志文件列表。
+// 便于测试或外部查询当前日志文件列表。
 func (f *FileLogger) WalkFiles(fn func(fs.DirEntry)) {
 	entries, err := os.ReadDir(f.dir)
 	if err != nil {
