@@ -35,21 +35,21 @@ func ParseConfig(version string, path string, args string, pre string, env strin
 	// 系统相关
 	config.Version = version // 系统版本号
 	// 子进程相关
-	config.Path = path
-	config.Args = args
-	config.Pre = pre
-	config.Env = env
-	config.AutoRestart = autoRestart
-	config.RestartTimes = restartTimes
-	config.StartNow = startNow
+	config.Path = path                 // 子进程路径
+	config.Args = args                 // 子进程参数
+	config.Pre = pre                   // 启动前命令
+	config.Env = env                   // 子进程环境变量
+	config.AutoRestart = autoRestart   // 是否自动重启
+	config.RestartTimes = restartTimes // 最大重试次数
+	config.StartNow = startNow         // 是否立即启动
 	// 管理器相关
-	config.Port = port
-	config.Password = password
-	config.LogCapacity = logCapacity
-	config.LogMaxLineBytes = logMaxLineBytes
-	config.FileLogEnabled = fileLogEnabled
-	config.LocalLogPath = localLogPath
-	config.LocalLogLifeDay = localLogLifeDay
+	config.Port = port                       // 管理端口
+	config.Password = password               // 管理密码
+	config.LogCapacity = logCapacity         // 日志容量
+	config.LogMaxLineBytes = logMaxLineBytes // 日志单行最大字节数
+	config.FileLogEnabled = fileLogEnabled   // 是否启用文件日志
+	config.LocalLogPath = localLogPath       // 本地日志文件目录
+	config.LocalLogLifeDay = localLogLifeDay // 本地日志文件保存天数
 
 	return config
 }

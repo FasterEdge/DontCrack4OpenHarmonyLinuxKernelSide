@@ -26,6 +26,7 @@ func CheckConfig(config Config) error {
 	return nil
 }
 
+// 检查指定位置的文件存在并且是文件而不是文件夹
 func fileExists(filename string) bool {
 	info, err := os.Stat(filename) // 如要忽略符号链接用 os.Lstat
 	if err != nil {
