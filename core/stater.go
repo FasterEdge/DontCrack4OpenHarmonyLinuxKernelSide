@@ -250,7 +250,7 @@ func min(a, b int) int {
 	return b
 }
 
-// buildChildEnv 合并环境变量并返回 PATH 便于日志打印
+// 合并环境变量并返回 PATH 便于日志打印
 func buildChildEnv(envStr string) ([]string, string) {
 	base := os.Environ()
 	add := parseExtraEnv(envStr)
@@ -269,7 +269,7 @@ func buildChildEnv(envStr string) ([]string, string) {
 	return env, pathVal
 }
 
-// parseExtraEnv 解析以空格/分号分隔的 KEY=VAL 列表
+// 解析以空格/分号分隔的 KEY=VAL 列表
 func parseExtraEnv(s string) []string {
 	if s == "" {
 		return nil
@@ -286,7 +286,7 @@ func parseExtraEnv(s string) []string {
 	return out
 }
 
-// runPreCommand 在 /bin/sh 中执行启动前命令
+// 在 /bin/sh 中执行启动前命令
 func runPreCommand(cfg config.Config) error {
 	if cfg.Pre == "" {
 		return nil
@@ -335,18 +335,6 @@ func createCommand(cfg config.Config) *osexec.Cmd {
 	case "shell_script":
 		cmdArgs := append([]string{cfg.Path}, args...)
 		cmd = osexec.Command("/bin/sh", cmdArgs...)
-	case "python_script":
-		cmdArgs := append([]string{cfg.Path}, args...)
-		cmd = osexec.Command("python3", cmdArgs...)
-	case "nodejs_script":
-		cmdArgs := append([]string{cfg.Path}, args...)
-		cmd = osexec.Command("node", cmdArgs...)
-	case "perl_script":
-		cmdArgs := append([]string{cfg.Path}, args...)
-		cmd = osexec.Command("perl", cmdArgs...)
-	case "ruby_script":
-		cmdArgs := append([]string{cfg.Path}, args...)
-		cmd = osexec.Command("ruby", cmdArgs...)
 	default:
 		if len(args) > 0 {
 			cmd = osexec.Command(cfg.Path, args...)

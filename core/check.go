@@ -41,7 +41,7 @@ func detectFileType(path string) (string, error) {
 	// 读取的内容转换为字符串
 	content := string(buffer[:n])
 
-	// 首先检查是否是脚本文件（以 shebang 开头）
+	// 首先检查是否是脚本文件
 	if strings.HasPrefix(content, "#!") {
 		lines := strings.Split(content, "\n")
 		shebang := lines[0] // 获得第一行（带脚本格式）
