@@ -27,6 +27,7 @@ type Config struct {
 	LocalLogLifeDay int    // 本地日志文件保存天数(可选，默认7天，新日志进来的时候检查日志文件名)
 }
 
+// 将传入的参数转换为全局配置结构体
 func ParseConfig(version string, path string, args string, pre string, env string, autoRestart bool, restartTimes int, startNow bool,
 	port int, password string, logCapacity int, logMaxLineBytes int, fileLogEnabled bool, localLogPath string, localLogLifeDay int) *Config {
 	// 初始化空的配置结构体

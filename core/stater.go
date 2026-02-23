@@ -75,7 +75,7 @@ func Start(cfg config.Config) {
 	log.Printf("立即启动: %v", cfg.StartNow)
 	log.Printf("HTTP端口: %d", cfg.Port)
 
-	// 如果指定立即启动
+	// 如果指定立即启动则直接启动
 	if cfg.StartNow {
 		log.Println("立即启动目标进程...")
 		if err := startProcess(cfg); err != nil {
@@ -85,7 +85,7 @@ func Start(cfg config.Config) {
 
 	// 设置信号处理
 	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM) // 监听中断和终止信号
 
 	// 创建HTTP服务器
 	mux := http.NewServeMux()
@@ -285,7 +285,7 @@ func runPreCommand(cfg config.Config) error {
 	return nil
 }
 
-// createCommand 根据文件类型构造 osexec.Cmd
+// 根据文件类型构造 osexec.Cmd
 func createCommand(cfg config.Config) *osexec.Cmd {
 	var cmd *osexec.Cmd
 	args := []string{}

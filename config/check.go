@@ -6,6 +6,7 @@ import (
 	"os"
 )
 
+// 检查配置的合法性
 func CheckConfig(config Config) error {
 	// 根据定义的配置结构体进行检查
 	if config.Version == "" { // 系统版本号不能为空
