@@ -9,6 +9,7 @@ package core
 import (
 	"DontCrash/config"
 	pmexec "DontCrash/exec"
+	dclog "DontCrash/log"
 	"bufio"
 	"context"
 	"encoding/json"
@@ -41,8 +42,9 @@ var (
 	procState pmexec.Process
 	// exitState pmexec.ProcessExit // no longer needed separately
 
-	logCache []string
-	logMu    sync.Mutex
+	logCache   []string
+	logMu      sync.Mutex
+	fileLogger *dclog.FileLogger
 
 	shutdownSignal = make(chan struct{})
 )
@@ -66,6 +68,18 @@ func Start(cfg config.Config) {
 		log.Fatalf("无法检测文件类型: %v\n", err)
 		return
 	}
+	// 若开启文件日志，初始化 fileLogger（目录与保留天数来自配置）
+	if cfg.FileLogEnabled {
+		procName := filepath.Base(cfg.Path)
+		fl, ferr := dclog.NewFileLogger(cfg.LocalLogPath, procName, cfg.LocalLogLifeDay)
+		if ferr != nil {
+			log.Printf("初始化文件日志失败，继续运行但不落盘: %v", ferr)
+		} else {
+			fileLogger = fl
+			log.Printf("文件日志启用，目录=%s，保留天数=%d", cfg.LocalLogPath, cfg.LocalLogLifeDay)
+		}
+	}
+
 	log.Printf("检测到文件类型: %s", procState.FileType)
 	if cfg.Args != "" {
 		log.Printf("程序参数: %s", cfg.Args)
@@ -390,6 +404,9 @@ func readProcessOutput(reader io.ReadCloser, prefix string, cfg config.Config) {
 			logCache = logCache[len(logCache)-cfg.LogCapacity:]
 		}
 		logMu.Unlock()
+		if fileLogger != nil {
+			fileLogger.WriteLine(logMsg)
+		}
 		log.Println(logMsg)
 	}
 
