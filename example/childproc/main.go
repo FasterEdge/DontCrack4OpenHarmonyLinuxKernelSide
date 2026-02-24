@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"log"
 	"math/rand"
 	"os"
 	"os/signal"
@@ -27,7 +26,11 @@ func main() {
 	message := flag.String("message", "", "自定义输出前缀")
 	flag.Parse()
 
-	log.SetFlags(log.LstdFlags | log.Lmicroseconds)
+	// 使用 stdout 打印，手动加上时间戳方便观察
+	logLine := func(format string, args ...any) {
+		ts := time.Now().Format("2006/01/02 15:04:05.000000")
+		fmt.Printf(ts+" "+format+"\n", args...)
+	}
 
 	// 读取并更新环境中的重启计数
 	restartEnv := os.Getenv("RESTART_ENV_COUNT")
@@ -35,7 +38,7 @@ func main() {
 	if restartEnv != "" {
 		restartCount++
 		// 不修改父进程环境，只打印观察
-		log.Printf("env restart count -> %d", restartCount)
+		logLine("env restart count -> %d", restartCount)
 	}
 
 	// 状态文件计数，用于跨重启观察
@@ -43,14 +46,14 @@ func main() {
 		cnt := readCounter(*stateFile)
 		cnt++
 		_ = os.WriteFile(*stateFile, []byte(fmt.Sprintf("%d", cnt)), 0644)
-		log.Printf("state-file %s count -> %d", *stateFile, cnt)
+		logLine("state-file %s count -> %d", *stateFile, cnt)
 	}
 
 	// 打印启动信息
-	log.Printf("childproc start | pid=%d | mode=%s | interval=%s | lifetime=%s | msg=%s", os.Getpid(), *mode, interval.String(), lifetime.String(), *message)
-	log.Printf("args: %s", strings.Join(os.Args, " "))
-	log.Printf("env EXTRA_INFO=%s", os.Getenv("EXTRA_INFO"))
-	log.Printf("env RESTART_ENV_COUNT=%s", restartEnv)
+	logLine("childproc start | pid=%d | mode=%s | interval=%s | lifetime=%s | msg=%s", os.Getpid(), *mode, interval.String(), lifetime.String(), *message)
+	logLine("args: %s", strings.Join(os.Args, " "))
+	logLine("env EXTRA_INFO=%s", os.Getenv("EXTRA_INFO"))
+	logLine("env RESTART_ENV_COUNT=%s", restartEnv)
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
@@ -65,11 +68,11 @@ func main() {
 	for {
 		select {
 		case <-ctx.Done():
-			log.Println("received signal, exiting gracefully")
+			logLine("received signal, exiting gracefully")
 			return
 		case t := <-ticker.C:
 			// 周期性输出 stdout
-			log.Printf("tick at %s", t.Format(time.RFC3339Nano))
+			logLine("tick at %s", t.Format(time.RFC3339Nano))
 			// 额外模拟 stderr 输出
 			fmt.Fprintf(os.Stderr, "stderr burst at %s\n", t.Format(time.RFC3339Nano))
 		default:
@@ -77,10 +80,10 @@ func main() {
 			if *lifetime > 0 && time.Since(start) > *lifetime {
 				switch *mode {
 				case "crash":
-					log.Println("lifetime reached, simulating crash")
+					logLine("lifetime reached, simulating crash")
 					os.Exit(crashCode)
 				case "graceful", "normal":
-					log.Println("lifetime reached, exiting normally")
+					logLine("lifetime reached, exiting normally")
 					return
 				}
 			}
@@ -88,7 +91,7 @@ func main() {
 				// 持续消耗 CPU 轻度循环，偶尔打印
 				time.Sleep(200 * time.Millisecond)
 				if rand.Intn(20) == 0 {
-					log.Printf("hang mode heartbeat pid=%d", os.Getpid())
+					logLine("hang mode heartbeat pid=%d", os.Getpid())
 				}
 				continue
 			}

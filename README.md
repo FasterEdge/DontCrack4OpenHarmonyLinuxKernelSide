@@ -52,13 +52,13 @@
 - 请求方式：get、post
 - 请求参数
   ```
-key: 密钥（可选params参数）
-```
+  key: 密钥（可选params参数）
+  ```
 - 返回类型：文本
 - 返回示例：
-     ```
-     ok
-     ```
+    ```
+    ok
+    ```
 
 > /heartbeat
 
@@ -66,13 +66,43 @@ key: 密钥（可选params参数）
 - 请求方式：get、post
 - 请求参数
   ```
-key: 密钥（可选params参数）
-```
+  key: 密钥（可选params参数）
+  ```
 - 返回类型：JSON
 - 返回示例：
      ```
-     {"version":"1.1.20260112","state":"stopped","info":"进程管理器正常运行","timestamp":"2026-02-24 15:28:04","logs":["[STDERR] 2026/02/24 15:27:55.647714 env restart count -\u003e 1","[STDERR] 2026/02/24 15:27:55.648316 childproc start | pid=32054 | mode=normal | interval=1s | lifetime=5s | msg=","[STDERR] 2026/02/24 15:27:55.648345 args: /Volumes/老固态/Projects/FasterEdge/DontCrack4OpenHarmonyLinuxKernelSide/example/childproc/childproc -mode normal -interval 1s -lifetime 5s","[STDERR] 2026/02/24 15:27:55.648352 env EXTRA_INFO=from_manager","[STDERR] 2026/02/24 15:27:55.648353 env RESTART_ENV_COUNT=0","[STDERR] 2026/02/24 15:27:56.668982 tick at 2026-02-24T15:27:56.64879725+08:00","[STDERR] stderr burst at 2026-02-24T15:27:56.64879725+08:00","[STDERR] 2026/02/24 15:27:57.686757 tick at 2026-02-24T15:27:57.648801166+08:00","[STDERR] stderr burst at 2026-02-24T15:27:57.648801166+08:00","[STDERR] 2026/02/24 15:27:58.652718 tick at 2026-02-24T15:27:58.648811791+08:00","[STDERR] stderr burst at 2026-02-24T15:27:58.648811791+08:00","[STDERR] 2026/02/24 15:27:59.668692 tick at 2026-02-24T15:27:59.648816958+08:00","[STDERR] stderr burst at 2026-02-24T15:27:59.648816958+08:00","[STDERR] 2026/02/24 15:28:00.686286 tick at 2026-02-24T15:28:00.648823625+08:00","[STDERR] stderr burst at 2026-02-24T15:28:00.648823625+08:00","[STDERR] 2026/02/24 15:28:00.686300 lifetime reached, exiting normally"],"process_pid":0,"process_path":"/Volumes/老固态/Projects/FasterEdge/DontCrack4OpenHarmonyLinuxKernelSide/example/childproc/childproc","restart_count":0,"file_type":"binary_executable","last_exit_time":"2026-02-24 15:28:00","program_args":"-mode normal -interval 1s -lifetime 5s","extra_env_raw":"PATH=/opt/tools/bin EXTRA_INFO=from_manager RESTART_ENV_COUNT=0"}
-     ```
+	{
+	"version": "1.1.20260112",
+	"state": "stopped",
+	"info": "进程管理器正常运行",
+	"timestamp": "2026-02-24 15:28:04",
+	"logs": [
+	"[STDERR] 2026/02/24 15:27:55.647714 env restart count -> 1",
+	"[STDERR] 2026/02/24 15:27:55.648316 childproc start | pid=32054 | mode=normal | interval=1s | lifetime=5s | msg=",
+	"[STDERR] 2026/02/24 15:27:55.648345 args: /Volumes/老固态/Projects/FasterEdge/DontCrack4OpenHarmonyLinuxKernelSide/example/childproc/childproc -mode normal -interval 1s -lifetime 5s",
+	"[STDERR] 2026/02/24 15:27:55.648352 env EXTRA_INFO=from_manager",
+	"[STDERR] 2026/02/24 15:27:55.648353 env RESTART_ENV_COUNT=0",
+	"[STDERR] 2026/02/24 15:27:56.668982 tick at 2026-02-24T15:27:56.64879725+08:00",
+	"[STDERR] stderr burst at 2026-02-24T15:27:56.64879725+08:00",
+	"[STDERR] 2026/02/24 15:27:57.686757 tick at 2026-02-24T15:27:57.648801166+08:00",
+	"[STDERR] stderr burst at 2026-02-24T15:27:57.648801166+08:00",
+	"[STDERR] 2026/02/24 15:27:58.652718 tick at 2026-02-24T15:27:58.648811791+08:00",
+	"[STDERR] stderr burst at 2026-02-24T15:27:58.648811791+08:00",
+	"[STDERR] 2026/02/24 15:27:59.668692 tick at 2026-02-24T15:27:59.648816958+08:00",
+	"[STDERR] stderr burst at 2026-02-24T15:27:59.648816958+08:00",
+	"[STDERR] 2026/02/24 15:28:00.686286 tick at 2026-02-24T15:28:00.648823625+08:00",
+	"[STDERR] stderr burst at 2026-02-24T15:28:00.648823625+08:00",
+	"[STDERR] 2026/02/24 15:28:00.686300 lifetime reached, exiting normally"
+	],
+	"process_pid": 0,
+	"process_path": "/Volumes/老固态/Projects/FasterEdge/DontCrack4OpenHarmonyLinuxKernelSide/example/childproc/childproc",
+	"restart_count": 0,
+	"file_type": "binary_executable",
+	"last_exit_time": "2026-02-24 15:28:00",
+	"program_args": "-mode normal -interval 1s -lifetime 5s",
+	"extra_env_raw": "PATH=/opt/tools/bin EXTRA_INFO=from_manager RESTART_ENV_COUNT=0"
+	}
+	```
 
 > /shutdown
 
@@ -81,13 +111,22 @@ key: 密钥（可选params参数）
 - 请求参数
   ```
   key: 密钥（可选params参数）
-   ```
+  ```
 - 返回类型：文本
 - 返回示例：
-     ```
-     ok
-     ```
+  ```
+  ok
+  ```
 
-### 四、使用技巧
+### 四、细节说明
 
 - 目标管理的进程的Path尽量使用全路径
+- 开源鸿蒙系统一般只有一个sh命令工具位于/bin/sh，没有bash，但也可以执行脚本的
+- 运行的文件使用.sh结尾、首行包含#! 都将被识别为脚本文件，由sh执行
+
+### 五、使用技巧
+
+- 单独使用时如果在会话中使用&作为命令结尾时一般会话结束的时候这个操作也会被杀死
+- Go语言程序的log.Printf默认将数据写到os.Stderr，所以子进程中日志类型会显示为[STDERR]，可以换成fmt.Println得到非[STDERR]的消息
+- 因为可以通过HTTP带加密的形式操作进程，你可以根据此文档将进程操作结合开源鸿蒙系统设备的角色，再结合合AI+MCP（或Skills）完成各种操作
+- 除了可以使用直接功能保证进程健壮性，还可以利用反复重启机制实现进程轮询，预先脚本也能实现延迟启动，等待依赖进程等操作
