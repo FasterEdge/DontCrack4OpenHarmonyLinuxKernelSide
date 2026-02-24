@@ -37,7 +37,7 @@ const logo = `
     \|_______|\|_______|        \|_______|        \|_______|\|__|\|__|
 `
 
-const rootMsg = "DontCrack By FasterEdge"
+const rootMsg = "DontCrack_arm64 By FasterEdge"
 
 // 管理器运行时状态
 var (
@@ -61,7 +61,7 @@ func Start(cfg config.Config) {
 	}
 	// 输出启动Logo和版本等欢迎信息
 	log.Printf(logo)
-	log.Printf("DontCrack for OpenHarmony v%s 启动中...\n", cfg.Version)
+	log.Printf("DontCrack_arm64 for OpenHarmony v%s 启动中...\n", cfg.Version)
 	log.Printf("管理进程正在管理的程序: %s\n", cfg.Path)
 
 	// 初始化全局状态
