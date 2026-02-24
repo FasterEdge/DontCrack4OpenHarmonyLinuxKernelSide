@@ -8,14 +8,21 @@
 ### 一、功能简介
 - 用于提高开源鸿蒙Linux Kernel的`init.cfg`中用户自定义进程健壮性、可用性、时序稳定性
 - 有效避免因`init.cfg`因细微格式错误导致设备无法开机、系统进程无法顺利启动、卡开机Logo
-- 通过高层面隔离实现了与所管理进程的低耦合，不挑管理对象：`二进制可执行程序`、`sh脚本`、`Python脚本`、`Node脚本`、`Perl脚本`、`Ruby脚本`
+- 支持管理这些类型的进程：`二进制可执行程序`、`sh脚本`
 - 实现将进程对应到端口号，可通Restful API实现获取日志、开关进程等操作
 - 启动的进程可以配置独立的：程序路径、环境变量、启动参数、预处理脚本、是否自动重启、崩溃自动重启次数、是否立即启动、端口号、日志最大缓存行数、单行日志最大字节数
 - 支持跨架构，免CGO，支持任何可被GO编译器编译程序的架构使用
 
 ### 二、基础用法
 ```
-./DontCrack -path /home/test_program.sh -args "-key=test123 -shell=/bin/bash" -start-now
+./DontCrack \
+  -path "/Volumes/老固态/Projects/FasterEdge/DontCrack4OpenHarmonyLinuxKernelSide/example/childproc/childproc" \
+  -args "-mode normal -interval 500ms -lifetime 5s" \
+  -env "EXTRA_INFO=from_manager RESTART_ENV_COUNT=0" \
+  -file-log -log-path ./example/logs/ -log-life-day 7 \
+  -auto-restart -max-retries 2 \
+  -start-now \
+  -password 123456
 ```
 | 配置项                | 类型     | 默认值     | 说明                                                            | 
 | ------------------ | ------ | ------- | ------------------------------------------------------------- |
@@ -32,8 +39,8 @@
 - 通过指定的IP:端口/heartbeat 查看缓存的日志
 - 通过指定的IP:端口/shutdown 终止进程
 ### 三、TodoList
-- [ ] 重构代码结构，使其易于迭代
-- [ ] 可选的日志本地完整存储、定时清除
-- [ ] 自动重启次数二次修改、复位
-- [ ] 无限次重启开关
-- [ ] 远程访问和操作进程和查看日志时支持加密
+- [X] 重构代码结构，使其易于迭代
+- [X] 可选的日志本地完整存储、定时清除
+- [X] 自动重启次数二次修改、复位
+- [X] 无限次重启开关
+- [X] 远程访问和操作进程和查看日志时支持加密

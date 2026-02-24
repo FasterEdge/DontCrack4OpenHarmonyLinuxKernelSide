@@ -69,7 +69,7 @@ func detectFileType(path string) (string, error) {
 	}
 }
 
-// checkPassword 校验请求中携带的 password，如果未配置密码则直接通过
+// 校验请求中携带的 password，如果未配置密码则直接通过
 func checkPassword(r *http.Request, expected string) error {
 	if expected == "" {
 		return nil

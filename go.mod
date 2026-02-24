@@ -1,3 +1,3 @@
-module DontCrash
+module DontCrack
 
 go 1.21

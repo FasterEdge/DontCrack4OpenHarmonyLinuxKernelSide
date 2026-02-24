@@ -1,8 +1,8 @@
 package main
 
 import (
-	"DontCrash/config"
-	"DontCrash/core"
+	"DontCrack/config"
+	"DontCrack/core"
 	"flag"
 )
 

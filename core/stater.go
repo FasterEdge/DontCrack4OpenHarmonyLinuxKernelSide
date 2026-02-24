@@ -7,9 +7,9 @@ package core
 // tyza66
 // https://github.com/tyza66
 import (
-	"DontCrash/config"
-	pmexec "DontCrash/exec"
-	dclog "DontCrash/log"
+	"DontCrack/config"
+	pmexec "DontCrack/exec"
+	dclog "DontCrack/log"
 	"bufio"
 	"context"
 	"encoding/json"
@@ -37,7 +37,7 @@ const logo = `
     \|_______|\|_______|        \|_______|        \|_______|\|__|\|__|
 `
 
-const rootMsg = "DontCrash By FasterEdge"
+const rootMsg = "DontCrack By FasterEdge"
 
 // 管理器运行时状态
 var (
