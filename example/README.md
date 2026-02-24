@@ -11,7 +11,7 @@
 
 ## 构建
 ```bash
-cd example
+cd /childproc
 GO111MODULE=on go build -o childproc ./childproc
 ```
 
