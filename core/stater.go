@@ -292,7 +292,7 @@ func runPreCommand(cfg config.Config) error {
 		return nil
 	}
 	log.Printf("执行启动前命令: %s", cfg.Pre)
-	cmd := osexec.Command("/bin/sh", "-c", cfg.Pre)
+	cmd := osexec.Command("/bin/sh", "-c", cfg.Pre) // OH默认带的是sh
 	cmd.Dir = filepath.Dir(cfg.Path)
 	if env, pathVal := buildChildEnv(cfg.Env); len(env) > 0 {
 		cmd.Env = env
@@ -329,10 +329,10 @@ func createCommand(cfg config.Config) *osexec.Cmd {
 	}
 
 	switch procState.FileType {
-	case "bash_script":
-		cmdArgs := append([]string{cfg.Path}, args...)
-		cmd = osexec.Command("bash", cmdArgs...)
 	case "shell_script":
+		cmdArgs := append([]string{cfg.Path}, args...)
+		cmd = osexec.Command("/bin/sh", cmdArgs...)
+	case "script":
 		cmdArgs := append([]string{cfg.Path}, args...)
 		cmd = osexec.Command("/bin/sh", cmdArgs...)
 	default:

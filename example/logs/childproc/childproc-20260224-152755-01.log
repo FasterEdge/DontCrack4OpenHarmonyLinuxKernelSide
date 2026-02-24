@@ -1,0 +1,24 @@
+[STDERR] 2026/02/24 15:27:55.647714 env restart count -> 1
+[STDERR] 2026/02/24 15:27:55.648316 childproc start | pid=32054 | mode=normal | interval=1s | lifetime=5s | msg=
+[STDERR] 2026/02/24 15:27:55.648345 args: /Volumes/老固态/Projects/FasterEdge/DontCrack4OpenHarmonyLinuxKernelSide/example/childproc/childproc -mode normal -interval 1s -lifetime 5s
+[STDERR] 2026/02/24 15:27:55.648352 env EXTRA_INFO=from_manager
+[STDERR] 2026/02/24 15:27:55.648353 env RESTART_ENV_COUNT=0
+[STDERR] 2026/02/24 15:27:56.668982 tick at 2026-02-24T15:27:56.64879725+08:00
+[STDERR] stderr burst at 2026-02-24T15:27:56.64879725+08:00
+[STDERR] 2026/02/24 15:27:57.686757 tick at 2026-02-24T15:27:57.648801166+08:00
+[STDERR] stderr burst at 2026-02-24T15:27:57.648801166+08:00
+[STDERR] 2026/02/24 15:27:58.652718 tick at 2026-02-24T15:27:58.648811791+08:00
+[STDERR] stderr burst at 2026-02-24T15:27:58.648811791+08:00
+[STDERR] 2026/02/24 15:27:59.668692 tick at 2026-02-24T15:27:59.648816958+08:00
+[STDERR] stderr burst at 2026-02-24T15:27:59.648816958+08:00
+[STDERR] 2026/02/24 15:28:00.686286 tick at 2026-02-24T15:28:00.648823625+08:00
+[STDERR] stderr burst at 2026-02-24T15:28:00.648823625+08:00
+[STDERR] 2026/02/24 15:28:00.686300 lifetime reached, exiting normally
+[STDERR] 2026/02/24 15:29:59.489473 env restart count -> 1
+[STDERR] 2026/02/24 15:29:59.489753 childproc start | pid=32237 | mode=normal | interval=1s | lifetime=5s | msg=
+[STDERR] 2026/02/24 15:29:59.489785 args: /Volumes/老固态/Projects/FasterEdge/DontCrack4OpenHarmonyLinuxKernelSide/example/childproc/childproc -mode normal -interval 1s -lifetime 5s
+[STDERR] 2026/02/24 15:29:59.489791 env EXTRA_INFO=from_manager
+[STDERR] 2026/02/24 15:29:59.489792 env RESTART_ENV_COUNT=0
+[STDERR] 2026/02/24 15:30:00.509948 tick at 2026-02-24T15:30:00.48992125+08:00
+[STDERR] stderr burst at 2026-02-24T15:30:00.48992125+08:00
+[STDERR] 2026/02/24 15:30:01.275079 received signal, exiting gracefully

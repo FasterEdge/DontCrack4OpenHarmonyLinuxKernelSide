@@ -42,16 +42,14 @@ func detectFileType(path string) (string, error) {
 	content := string(buffer[:n])
 
 	// 首先检查是否是脚本文件
-	if strings.HasPrefix(content, "#!") {
+	if strings.HasPrefix(content, "#!") { // 只要第一行以 "#!" 开头，就认为是脚本文件
 		lines := strings.Split(content, "\n")
 		shebang := lines[0] // 获得第一行（带脚本格式）
 		switch {
-		case strings.Contains(shebang, "bash"): // 如果脚本格式中包含 "bash"，则认为是 bash 脚本
-			return "bash_script", nil
 		case strings.Contains(shebang, "sh"): // 如果脚本格式中包含 "sh"，则认为是 shell 脚本
 			return "shell_script", nil
 		default:
-			return "script", nil
+			return "script", nil // 如果是其他脚本格式但不包含 "sh"，则认为是普通脚本，也尝试使用sh去执行，报错也将被正常记录
 		}
 	}
 
