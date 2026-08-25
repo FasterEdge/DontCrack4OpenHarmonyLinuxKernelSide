@@ -111,42 +111,52 @@ func (p *Process) StartManagedProcess(h Hooks) error {
 }
 
 // StopManagedProcess 尝试优雅停止进程
+// 注意：cmd.Wait() 只能被调用一次。monitor goroutine 已经持有 Wait 的唯一所有权，
+// 这里只负责发信号 + 等待 IsRunning 被 monitor 清掉，超时后 Kill。
 func (p *Process) StopManagedProcess(timeout time.Duration) error {
 	p.ProcessMu.Lock()
 	if !p.IsRunning || p.CurrentProcess == nil {
 		p.ProcessMu.Unlock()
 		return fmt.Errorf("进程未运行")
 	}
+	// 标记为"主动停止"，monitor 在 OnExit 后会跳过自动重启
 	p.stoppedByReq = true
 	cmd := p.CurrentProcess
 	p.ProcessMu.Unlock()
 
+	// 发送终止信号；失败也无碍，超时后会强制 Kill
 	if err := cmd.Process.Signal(syscall.SIGTERM); err != nil {
-		// 尝试继续等待，即使发送信号失败也不立即返回
+		// 忽略，交给下方的超时强杀
 	}
 
-	done := make(chan error, 1)
-	go func(c *exec.Cmd) {
-		done <- c.Wait()
-	}(cmd)
-
-	select {
-	case <-time.After(timeout):
-		if err := cmd.Process.Kill(); err != nil {
-			return fmt.Errorf("强制终止进程失败: %v", err)
+	// 轮询等待 monitor 把 IsRunning 置为 false（说明进程已退出并被 Wait 收走）
+	deadline := time.Now().Add(timeout)
+	for time.Now().Before(deadline) {
+		p.ProcessMu.Lock()
+		running := p.IsRunning && p.CurrentProcess != nil
+		p.ProcessMu.Unlock()
+		if !running {
+			return nil // monitor 已完成清理
 		}
-		<-done
-	case err := <-done:
-		if err != nil {
-			// 非致命，记录由外层完成
-		}
+		time.Sleep(100 * time.Millisecond)
 	}
 
-	p.ProcessMu.Lock()
-	p.IsRunning = false
-	p.CurrentProcess = nil
-	p.ProcessMu.Unlock()
-	return nil
+	// 超时仍未退出 → 强制 Kill
+	if err := cmd.Process.Kill(); err != nil {
+		return fmt.Errorf("强制终止进程失败: %v", err)
+	}
+	// Kill 后再等 monitor 收走
+	deadline = time.Now().Add(5 * time.Second)
+	for time.Now().Before(deadline) {
+		p.ProcessMu.Lock()
+		running := p.IsRunning && p.CurrentProcess != nil
+		p.ProcessMu.Unlock()
+		if !running {
+			return nil
+		}
+		time.Sleep(100 * time.Millisecond)
+	}
+	return fmt.Errorf("进程在强杀后仍未被回收")
 }
 
 // monitor 等待进程退出并回调 OnExit；如果需要，自动重启
@@ -179,6 +189,13 @@ func (p *Process) monitor(cmd *exec.Cmd, h Hooks) {
 
 	if h.OnExit != nil {
 		h.OnExit(exitInfo)
+	}
+
+	// 手动停止(HTTP /shutdown 或管理器关机触发的停止)后不再自动重启。
+	// 否则 auto-restart 开启时 /shutdown 杀掉当前进程后 monitor 又把它拉起来，
+	// 造成"关都关不掉"的暗病。
+	if exitInfo.StoppedByRequest {
+		return
 	}
 
 	if h.AutoRestart && (h.RestartTimes < 0 || p.RestartCount < h.RestartTimes) {

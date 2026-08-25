@@ -53,6 +53,12 @@ var (
 
 // 初始化并启动管理器
 func Start(cfg config.Config) {
+	// 进程退出（信号/SIGTERM 时优雅关闭日志文件
+	defer func() {
+		if fileLogger != nil {
+			_ = fileLogger.Close()
+		}
+	}()
 	// 检查配置信息是否合法
 	err := config.CheckConfig(cfg)
 	if err != nil {
@@ -121,7 +127,9 @@ func Start(cfg config.Config) {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
+		procState.ProcessMu.Lock()
 		procState.RestartCount = 0
+		procState.ProcessMu.Unlock()
 		if err := startProcess(cfg); err != nil {
 			http.Error(w, fmt.Sprintf("启动进程失败: %v", err), http.StatusInternalServerError)
 			return
@@ -251,13 +259,16 @@ func min(a, b int) int {
 }
 
 // 合并环境变量并返回 PATH 便于日志打印
+// 注意: 自定义 env 必须放在 base 前面，这样 -env PATH=/foo 才能真正覆盖继承 PATH
+// (Linux 子进程的 getenv 取首个匹配)
 func buildChildEnv(envStr string) ([]string, string) {
 	base := os.Environ()
 	add := parseExtraEnv(envStr)
-	env := append([]string{}, base...)
-	env = append(env, add...)
+	// 自定义环境放最前，覆盖基础环境
+	env := append([]string{}, add...)
+	env = append(env, base...)
 	pathVal := ""
-	for i := len(env) - 1; i >= 0; i-- {
+	for i := 0; i < len(env); i++ {
 		if strings.HasPrefix(env[i], "PATH=") {
 			pathVal = strings.TrimPrefix(env[i], "PATH=")
 			break
