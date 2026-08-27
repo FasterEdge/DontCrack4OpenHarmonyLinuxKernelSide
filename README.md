@@ -1,5 +1,5 @@
 <div align="center">  
-<img src="https://s2.loli.net/2025/10/30/whQl7sJryj1GbHU.png" style="width:100px;" width="100"/>  
+<img src="./Logo.png" alt="logo" width="100"/>  
 <h2>DontCrack4OpenHarmonyLinuxKernelSide</h2>  
 <h3>开源鸿蒙Linux Kernel侧专用进程管理器</h3>  
 </div>  
@@ -52,7 +52,7 @@
 - 请求方式：get、post
 - 请求参数
   ```
-  key: 密钥（可选params参数）
+  password: 密钥（可选 params 参数）
   ```
 - 返回类型：文本
 - 返回示例：
@@ -66,7 +66,7 @@
 - 请求方式：get、post
 - 请求参数
   ```
-  key: 密钥（可选params参数）
+  password: 密钥（可选 params 参数）
   ```
 - 返回类型：JSON
 - 返回示例：
@@ -110,7 +110,7 @@
 - 请求方式：get、post
 - 请求参数
   ```
-  key: 密钥（可选params参数）
+  password: 密钥（可选 params 参数）
   ```
 - 返回类型：文本
 - 返回示例：
@@ -123,7 +123,7 @@
 - 目标管理的进程的Path尽量使用全路径
 - 开源鸿蒙系统一般只有一个sh命令工具位于/bin/sh，没有bash，但也可以执行脚本的
 - 运行的文件使用.sh结尾、首行包含#! 都将被识别为脚本文件，由sh执行
-- 开启密码时，接口请求需要在URL参数中携带key参数，例如`xxx/startup?key=123456`
+- 开启密码时，接口请求需要在URL参数中携带 `password` 参数，例如 `xxx/startup?password=123456`
 
 ### 五、使用技巧
 
