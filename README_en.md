@@ -72,7 +72,7 @@
 - Example response:
      ```
 	{
-	"version": "1.0.20260826",
+	"version": "1.0.20260831",
 	"state": "stopped",
 	"info": "Process manager running normally",
 	"timestamp": "2026-02-24 15:28:04",
