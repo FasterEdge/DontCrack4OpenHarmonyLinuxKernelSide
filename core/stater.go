@@ -7,13 +7,13 @@ package core
 // tyza66
 // https://github.com/tyza66
 import (
-	"DontCrack/config"
-	pmexec "DontCrack/exec"
-	dclog "DontCrack/log"
 	"bufio"
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/FasterEdge/DontCrack4OpenHarmonyLinuxKernelSide/config"
+	pmexec "github.com/FasterEdge/DontCrack4OpenHarmonyLinuxKernelSide/exec"
+	dclog "github.com/FasterEdge/DontCrack4OpenHarmonyLinuxKernelSide/log"
 	"io"
 	"log"
 	"net"
@@ -183,13 +183,13 @@ func Start(cfg config.Config) {
 		}
 		procState.ProcessMu.Lock()
 		var (
-			stateFloat  float64
-			pid         int
-			restartCnt  = procState.RestartCount
-			fileType    = procState.FileType
-			procPath    = cfg.Path
-			lastExitTs  string
-			lastExitCd  = procState.ExitInfo.LastExitCode
+			stateFloat float64
+			pid        int
+			restartCnt = procState.RestartCount
+			fileType   = procState.FileType
+			procPath   = cfg.Path
+			lastExitTs string
+			lastExitCd = procState.ExitInfo.LastExitCode
 		)
 		if procState.IsRunning && procState.CurrentProcess != nil {
 			stateFloat = 1

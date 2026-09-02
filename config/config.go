@@ -18,10 +18,10 @@ type Config struct {
 	RestartTimes int    // 最大重试次数(可选，默认3次，-1表示无限次)
 	StartNow     bool   // 是否立即启动子进程(可选，默认关闭)
 	// 健康探针
-	ProbeCmd            string // 探针命令(如 "curl -sf http://localhost:8080/health")，空则禁用
-	ProbeInterval       int    // 探针间隔(秒，默认30)
-	ProbeTimeout        int    // 探针超时(秒，默认5)
-	ProbeFailureLimit   int    // 连续失败多少次算不健康(默认3)
+	ProbeCmd          string // 探针命令(如 "curl -sf http://localhost:8080/health")，空则禁用
+	ProbeInterval     int    // 探针间隔(秒，默认30)
+	ProbeTimeout      int    // 探针超时(秒，默认5)
+	ProbeFailureLimit int    // 连续失败多少次算不健康(默认3)
 	// 管理器相关
 	Port            int    // 管理进程使用的进程端口(可选，默认11883)
 	ListenAddress   string // HTTP 监听地址(可选，默认 127.0.0.1，仅本机访问)

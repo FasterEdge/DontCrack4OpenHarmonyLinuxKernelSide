@@ -1,9 +1,9 @@
 package main
 
 import (
-	"DontCrack/config"
-	"DontCrack/core"
 	"flag"
+	"github.com/FasterEdge/DontCrack4OpenHarmonyLinuxKernelSide/config"
+	"github.com/FasterEdge/DontCrack4OpenHarmonyLinuxKernelSide/core"
 )
 
 // FasterEdge - 对称、可靠、安全的多场景边缘计算框架
@@ -27,12 +27,12 @@ func main() {
 	maxRetries := flag.Int("max-retries", 3, "最大重试次数（可选，-1表示无限次，默认3次)")                                       // 重启最大重试次数
 	startNow := flag.Bool("start-now", false, "是否立即启动（可选，默认false)")                                           // 是否立即启动子进程
 	// 健康探针（可选，留空则不启用）
-	probeCmd := flag.String("probe-cmd", "", "子进程健康检查命令（如 \"curl -sf http://127.0.0.1:8080/health\"），留空禁用")           // 探针命令
-	probeInterval := flag.Int("probe-interval", 30, "探针间隔秒数（可选，默认30）")                                              // 探针间隔
-	probeTimeout := flag.Int("probe-timeout", 5, "探针超时秒数（可选，默认5）")                                                   // 探针超时
-	probeFailureLimit := flag.Int("probe-failure-limit", 3, "连续失败多少次判定为不健康（可选，默认3）")                              // 探针失败阈值
+	probeCmd := flag.String("probe-cmd", "", "子进程健康检查命令（如 \"curl -sf http://127.0.0.1:8080/health\"），留空禁用") // 探针命令
+	probeInterval := flag.Int("probe-interval", 30, "探针间隔秒数（可选，默认30）")                                      // 探针间隔
+	probeTimeout := flag.Int("probe-timeout", 5, "探针超时秒数（可选，默认5）")                                          // 探针超时
+	probeFailureLimit := flag.Int("probe-failure-limit", 3, "连续失败多少次判定为不健康（可选，默认3）")                        // 探针失败阈值
 	// 管理器相关
-	port := flag.Int("port", 11883, "HTTP服务端口(可选，默认11883)")                                                                // 管理端口、mcp连接端口
+	port := flag.Int("port", 11883, "HTTP服务端口(可选，默认11883)") // 管理端口、mcp连接端口
 	listenAddress := flag.String("listen-address", "127.0.0.1", "HTTP监听地址（可选，默认127.0.0.1仅本机访问；对外监听必须配置密码）")
 	password := flag.String("password", "", "管理进程的密码（可选，默认为空且不开启密码保护）")                                                    // 管理密码
 	logCapacity := flag.Int("log-capacity", 200, "日志缓存的最大行数（可选，默认200）")                                                    // 日志缓存的最大行数
