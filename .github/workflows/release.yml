@@ -38,7 +38,7 @@ jobs:
         else
           tar czf ../dontcrack-openharmony-linux-kernel-${{ matrix.target }}.tar.gz dontcrack-openharmony-linux-kernel
         fi
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v7
       with:
         name: 'dontcrack-openharmony-linux-kernel-${{ matrix.target }}'
         path: '${{ github.workspace }}/dontcrack-openharmony-linux-kernel-${{ matrix.target }}.*'
